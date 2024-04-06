@@ -9,6 +9,17 @@ function Store() {
 
     function ProductPage() {
 
+        useEffect(() => {
+            total();
+        }, [cart]);
+
+        const total = () => {
+            let totalVal = 0;
+            for (let i = 0; i < cart.length; i++) {
+                totalVal += cart[i].price;
+            }
+            setCartTotal(totalVal);
+        };
 
         const addToCart = (el) => {
             setCart([...cart, el]);
@@ -42,30 +53,46 @@ function Store() {
         ));
 
         return (<div>
+            <h1>Browse Items</h1>
             {listItems}
         </div>);
     }
 
     function CartPage() {
+        const cartItems = cart.map((el) => (
+            <div key={el.id}>
+                <img class="img-fluid" src={el.image} width={150} />
+                {el.title}
+                ${el.price}
+            </div>
+        ));
 
+        return (<div>
+            <div>Your Cart</div>
+            <div>{cartItems}</div>
+            <div>Order total to pay :{cartTotal}</div>
+
+        </div>);
     }
 
     function OrderPage() {
 
+
+
+        return (<div>
+            <h1>A confirmation of the order will go here</h1>
+        </div>);
     }
 
-    const setView = () =>{
 
-    }
-
-    const setView1 = () => {
+    const setView = () => {
         if (oneView === 0) setOneView(1)
         else if (oneView === 1) setOneView(2)
         else setOneView(0);
     };
 
-    return(<div>
-        <button onClick={setView1}>One</button>
+    return (<div>
+        <button onClick={setView}>One</button>
 
         {oneView === 0 && <ProductPage />}
         {oneView === 1 && <CartPage />}
