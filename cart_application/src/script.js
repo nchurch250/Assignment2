@@ -4,8 +4,8 @@ import items from "./products.json"
 function Store() {
     const [cart, setCart] = useState([]);
     const [cartTotal, setCartTotal] = useState(0);
-    const [oneView, setOneView] = useState(false);
-
+    const [oneView, setOneView] = useState(0);
+    
 
     function ProductPage() {
 
@@ -40,32 +40,73 @@ function Store() {
         };
 
         const listItems = items.map((el) => (
-            <div key={el.id}>
-                <img class="img-fluid" src={el.image} width={150} /> <br />
-                {el.title} <br />
-                {el.category} <br />
-                {el.price} <br />
-
-                <button type="button" onClick={() => removeFromCart(el)}>-</button>{" "}
-                <button type="button" variant="light" onClick={() => addToCart(el)}> + </button>
-
+            // PRODUCT
+            <div class="row border-top border-bottom" key={el.id}>
+              <div class="row main align-items-center">
+                <div class="col-2">
+                  <img class="img-fluid" src={el.image} />
+                </div>
+                <div class="col">
+                  <div class="row text-muted">{el.title}</div>
+                  <div class="row">{el.category}</div>
+                </div>
+                <div class="col">
+                  <button type="button" variant="light" onClick={() => removeFromCart(el)} > - </button>{" "}
+                  <button type="button" variant="light" onClick={() => addToCart(el)}> + </button>
+                </div>
+                <div class="col">
+                  ${el.price} <span class="close">&#10005;</span>
+                  {howManyofThis(el.id)}
+                </div>
+              </div>
             </div>
-        ));
+          ));
 
-        return (<div>
-            <h1>Browse Items</h1>
-            {listItems}
-        </div>);
+          function howManyofThis(id) {
+            let hmot = cart.filter((cartItem) => cartItem.id === id);
+            return hmot.length;
+          }
+
+          return (
+            <div>
+              INSERT TEXT HERE
+              <div class="card">
+                <div class="row">
+                  {/* HERE, IT IS THE SHOPING CART */}
+                  <div class="col-md-8 cart">
+                    <div class="title">
+                      <div class="row">
+                        <div class="col">
+                          <h4>
+                            <b>Dalton & Nathan's Epic Store</b>
+                          </h4>
+                        </div>
+                        <div class="col align-self-center text-right text-muted">
+                          Products selected {cart.length}
+                        </div>
+                      </div>
+                    </div>
+                    <div>{listItems}</div>
+                  </div>
+                  <div class="float-end">
+                    <p class="mb-0 me-5 d-flex align-items-center">
+                      <span class="small text-muted me-2">Order total:</span>
+                      <span class="lead fw-normal">${cartTotal}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
     }
 
     function CartPage() {
         const cartItems = cart.map((el) => (
             <div key={el.id}>
-                <img class="img-fluid" src={el.image} width={150} />
-                {el.title}
-                ${el.price}
+              <img class="img-fluid" src={el.image} width={150} />
+              {el.title}${el.price}
             </div>
-        ));
+          ));
 
         return (<div>
             <div>Your Cart</div>
@@ -91,8 +132,17 @@ function Store() {
         else setOneView(0);
     };
 
+    const returnView = () => {
+        if (oneView === 0) setOneView(2)
+        else if (oneView === 2) setOneView(1)
+        else setOneView(0);
+    };
+
     return (<div>
-        <button onClick={setView}>One</button>
+        {oneView === 0 && <button onClick={setView}>Cart</button>}
+        {oneView === 1 && <button onClick={returnView}>Back to Products</button>}
+        {oneView === 1 && <button onClick={setView}>Checkout</button>}
+        {oneView === 2 && <button onClick={returnView}>Return</button>}
 
         {oneView === 0 && <ProductPage />}
         {oneView === 1 && <CartPage />}
