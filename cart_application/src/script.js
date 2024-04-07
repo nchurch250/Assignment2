@@ -115,16 +115,16 @@ function Store() {
         const cartItems = cart.map((el) => (
             <div key={el.id}>
                 <img class="img-fluid" src={el.image} width={150} />
-                {el.title}${el.price}
+                {el.title} ${el.price} Quantity: 1
             </div>
         ));
 
 
 
         return (<div>
-            <div>Your Cart</div>
+            <h2>Your Cart</h2>
             <div>{cartItems}</div>
-            <div>Order total to pay :{cartTotal}</div>
+            <div>Order total to pay: ${cartTotal}</div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input {...register("fullName", { required: true })} placeholder="Full Name" />
@@ -135,7 +135,6 @@ function Store() {
                 {errors.creditCard && <p>Credit Card is required.</p>}
                 <input {...register("address", { required: true })} placeholder="Address" />
                 {errors.address && <p>Address is required.</p>}
-                <input {...register("address2")} placeholder="Address 2" />
                 <input {...register("city", { required: true })} placeholder="City" />
                 {errors.city && <p>City is required.</p>}
                 <input {...register("state", { required: true })} placeholder="State" />
@@ -143,7 +142,7 @@ function Store() {
                 <input {...register("zip", { required: true })} placeholder="Zip" />
                 {errors.zip && <p>Zip is required.</p>}
 
-                <button type="submit">Submit</button>
+                <button type="submit">Order</button>
             </form>
 
         </div>);
@@ -152,23 +151,34 @@ function Store() {
     function OrderPage() {
 
         const updateHooks = () => {
-            setOneView(2);
+            setView(2);
             setDataF({});
+            setCart([]);
         };
 
+        const cartItems = cart.map((el) => (
+            <div key={el.id}>
+                <img class="img-fluid" src={el.image} width={150} />
+                {el.title}${el.price}
+            </div>
+        ));
 
         return (<div>
-            <h1>A confirmation of the order will go here</h1>
+            <h2>Ordered Products</h2>
+            <div>{cartItems}</div>
 
             <h1>Payment summary:</h1>
             <h3>{dataF.fullName}</h3>
             <p>{dataF.email}</p>
             <p>{dataF.creditCard}</p>
-            <p>{dataF.address}</p>
-            <p>{dataF.address2}</p>
-            <p>{dataF.city},{dataF.state} {dataF.zip} </p>
+            <p>Billing Address: {dataF.address}</p>
+            <p>{dataF.city}, {dataF.state} {dataF.zip} </p>
 
-            <button onClick={updateHooks}>Submit</button>
+            <p>Subtotal: {cartTotal}</p>
+            <p>Tax: +{Math.floor((cartTotal * .07) * 100) / 100}</p>
+            <p>Total: {(Math.floor((cartTotal * .07) * 100) / 100) + cartTotal}</p>
+
+            <button onClick={updateHooks}>Done</button>
         </div>);
     }
 
