@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import items from "./products.json"
 
+
 function Store() {
     const [cart, setCart] = useState([]);
     const [cartTotal, setCartTotal] = useState(0);
     const [oneView, setOneView] = useState(0);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [dataF, setDataF] = useState({});
+    const [ProductsCategory, setProductsCategory] = useState(items);
+    const [query, setQuery] = useState('');
 
     function ProductPage() {
 
